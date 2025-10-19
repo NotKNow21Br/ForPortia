@@ -107,6 +107,9 @@
   </style>
 </head>
 <body>
+  <!-- Audio di sottofondo -->
+  <audio id="bg-music" src="audio/musica.webm" autoplay loop></audio>
+
   <div class="hearts" aria-hidden="true"></div>
   <header class="nav" role="navigation">
     <div class="wrap">
@@ -122,7 +125,7 @@
   </header>
 
   <main>
-    <!-- HERO -------------------------------------------------------------->
+    <!-- HERO -->
     <section class="hero" aria-labelledby="titolo">
       <div class="hero-card">
         <div class="hero-inner">
@@ -135,15 +138,14 @@
             </div>
           </div>
           <div class="hero-photo">
-            <!-- Sostituisci src con una tua foto verticale (4:5) -->
-            <img src="images/cover.jpeg" alt="Sei Bellissimissima" />
+            <img src="images/cover.jpeg" alt="La sua foto più bella" />
             <div class="glow" aria-hidden="true"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- LETTERA ----------------------------------------------------------->
+    <!-- LETTERA -->
     <section class="section" id="lettera" aria-labelledby="h-lettera">
       <article class="panel">
         <h3 class="heading" id="h-lettera">Lettera d'amore</h3>
@@ -157,33 +159,31 @@
       </article>
     </section>
 
-    <!-- GALLERIA ---------------------------------------------------------->
+    <!-- GALLERIA -->
     <section class="section" id="galleria" aria-labelledby="h-galleria">
       <div class="panel">
-        <h3 class="heading" id="h-galleria">Galleria dei nostri momenti</h3>
-        <!-- <p style="margin-top:-6px;color:var(--muted)">Clicca sulle immagini per vederle grandi ✨</p> -->
+        <h3 class="heading" id="h-galleria">La Ragazza del Futuro</h3>
         <div class="grid" id="gallery">
-          <!-- Sostituisci gli src con le tue foto. Puoi duplicare le card per aggiungerne altre. -->
           <figure class="card span-6 ratio-16x9">
-            <img src="images/foto1.jpeg" alt="My Favorite Girl" data-caption="You're my Favorite Girl In this World"/>
+            <img src="images/foto1.jpeg" alt="" data-caption=""/>
           </figure>
           <figure class="card span-3 ratio-4x5">
-            <img src="images/foto2.jpeg" alt="Il suo sorriso" data-caption="Il tuo sorriso, la mia pace"/>
+            <img src="images/foto2.jpeg" alt="" data-caption=""/>
           </figure>
           <figure class="card span-3 ratio-1x1">
-            <img src="images/foto3.jpeg" alt="Your Glasses" data-caption="Voglio Baciarti Tantissimo."/>
+            <img src="images/foto3.jpeg" alt="" data-caption=""/>
           </figure>
           <figure class="card span-4 ratio-4x5">
-            <img src="images/foto4.jpeg" alt="Ritratto" data-caption="Sei la mia opera d'arte"/>
+            <img src="images/foto4.jpeg" alt="" data-caption=""/>
           </figure>
           <figure class="card span-8 ratio-16x9">
-            <img src="images/foto5.jpeg" alt="Il tuo sorriso" data-caption="Mi Piace tantissimo le tue labbra."/>
+            <img src="images/foto5.jpeg" alt="" data-caption=""/>
           </figure>
         </div>
       </div>
     </section>
 
-    <!-- LIGHTBOX ---------------------------------------------------------->
+    <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Immagine ingrandita">
       <div class="lb-inner">
         <img class="lb-img" id="lbImg" alt="" />
@@ -198,16 +198,28 @@
   </footer>
 
   <script>
-    // === Personalizzazione rapida ==================================================
-    // Cambia qui i nomi e la lettera senza toccare l'HTML:
+    // === Riproduzione musica di sottofondo ===
+    document.addEventListener("DOMContentLoaded", function() {
+      const audio = document.getElementById("bg-music");
+      const playAudio = () => {
+        audio.muted = false;
+        audio.play().catch(() => {});
+        document.removeEventListener("click", playAudio);
+        document.removeEventListener("touchstart", playAudio);
+      };
+      audio.volume = 0.6;
+      document.addEventListener("click", playAudio);
+      document.addEventListener("touchstart", playAudio);
+    });
+
+    // === Personalizzazione rapida ===
     const CONFIG = {
       herName: "Carina",
       myName: "Arthur",
-      letterHtml: null, // se vuoi sostituire TUTTA la lettera, inserisci qui una stringa HTML (oppure lascia null)
+      letterHtml: null,
       floatingHearts: true,
     };
 
-    // Applica i nomi
     document.getElementById('herName').textContent = CONFIG.herName;
     document.getElementById('footerName').textContent = CONFIG.herName;
     document.getElementById('myName').textContent = CONFIG.myName;
@@ -215,7 +227,7 @@
       document.getElementById('loveLetter').innerHTML = CONFIG.letterHtml;
     }
 
-    // === Lightbox per la galleria ================================================
+    // === Lightbox per la galleria ===
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbCaption = document.getElementById('lbCaption');
@@ -241,7 +253,7 @@
     lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLB(); });
     window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLB(); });
 
-    // === Cuoricini che salgono dolcemente =========================================
+    // === Cuoricini che salgono dolcemente ===
     if (CONFIG.floatingHearts){
       const hearts = document.querySelector('.hearts');
       const emojis = ['💗','💖','💓','💞','💘'];
@@ -255,26 +267,15 @@
         hearts.appendChild(el);
         setTimeout(()=> el.remove(), 16000);
       }
-      // Avvio
       for(let i=0;i<12;i++) setTimeout(spawnHeart, i*600);
       setInterval(spawnHeart, 1200);
     }
 
-    // Accessibilità: link "torna su"
+    // Link "torna su"
     document.getElementById('topLink').addEventListener('click', (e)=>{
       e.preventDefault();
       window.scrollTo({top:0, behavior:'smooth'});
     });
   </script>
-
-  <!--
-  📦 ISTRUZIONI RAPIDE
-  1) Metti le tue immagini nella cartella /images e aggiorna gli src in <img>.
-     - Consigliate: cover.jpeg (verticale 4:5) + foto1.jpeg..foto5.jpeg.
-  2) Cambia i nomi dentro CONFIG in alto (herName, myName) e, se vuoi, letterHtml.
-  3) Duplica i <figure class="card ..."> per aggiungere quante foto vuoi.
-  4) Salva il file come index.html e aprilo nel browser.
-  5) Per pubblicarlo gratis: GitHub Pages, Netlify o Vercel (drag & drop).
-  -->
 </body>
 </html>
